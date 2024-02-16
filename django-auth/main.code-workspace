@@ -1,0 +1,41 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+	],
+	"settings": {
+		"python.defaultInterpreterPath": "${userHome}\\.virtualenvs\\django-angular-auth-refresh-xIOtCKrc\\Scripts\\python.exe",
+		"pylint.args": [
+			"--disable=C0114,C0115,C0116",
+			"--disable=django-not-configured",
+			"--load-plugins",
+			"pylint_django",
+			"--django-settings-module=practice_django.settings",
+			"--max-line-length=120"
+		],
+		"pylint.cwd": "${workspaceFolder}",
+		"pylint.interpreter": [
+			"${userHome}\\.virtualenvs\\django-angular-auth-refresh-xIOtCKrc\\Scripts\\python.exe",
+		],
+		"python.languageServer": "Pylance",
+		"python.analysis.autoImportCompletions": true,
+		"python.analysis.typeCheckingMode": "basic",
+		"editor.formatOnSave": true,
+		"explorer.copyRelativePathSeparator": "/",
+		"python.formatting.autopep8Args": [
+			"--max-line-length",
+			"120"
+		],
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": "explicit"
+		},
+		"[python]": {
+			"editor.defaultFormatter": "ms-python.black-formatter"
+		},
+		// "editor.defaultFormatter": "ms-python.black-formatter",
+		"black-formatter.args": [
+			"--line-length=120"
+		],
+	}
+}

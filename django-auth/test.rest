@@ -1,0 +1,53 @@
+POST http://localhost:8000/api/register/
+content-type: application/json
+
+{
+    "first_name": "test1",
+    "last_name": "test1",
+    "email": "test_1@mail.ru",
+    "password": "1",
+    "password_confirm": "1"
+}
+###
+POST http://localhost:8000/api/register/
+content-type: application/json
+
+{
+    "first_name": "test2",
+    "last_name": "test2",
+    "email": "test_2@mail.ru",
+    "password": "1",
+    "password_confirm": "1"
+}
+###
+POST http://localhost:8000/api/register/
+content-type: application/json
+
+{
+    "first_name": "test3",
+    "last_name": "test3",
+    "email": "test_3@mail.ru",
+    "password": "1",
+    "password_confirm": "1"
+}
+###
+POST http://localhost:8000/api/login/
+content-type: application/json
+
+{
+    "email": "test_1@mail.ru",
+    "password": "1"
+}
+###
+POST http://localhost:8000/api/logout/
+content-type: application/json
+###
+POST http://localhost:8000/api/logout-all/
+content-type: application/json
+###
+GET http://localhost:8000/api/user/
+content-type: application/json
+Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleHAiOjE3MDgxMTExMjUsImlhdCI6MTcwODExMTA5NX0.KYbXEUnCCnO6aJUUh2xI652WbiRMQ-eRhxyXZRnC6dE
+###
+POST http://localhost:8000/api/refresh/
+content-type: application/json
