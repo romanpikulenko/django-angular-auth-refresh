@@ -142,6 +142,10 @@ REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "core.exceptions.status_code_handler",
 }
 
-
+# CORS
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+# EMAIL
+EMAIL_HOST = "localhost"
+EMAIL_PORT = 1025

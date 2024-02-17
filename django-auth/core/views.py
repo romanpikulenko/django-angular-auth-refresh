@@ -1,17 +1,21 @@
 import datetime
-from urllib import response
+import random
+import string
 
+from django.core.mail import send_mail
 from rest_framework.exceptions import APIException, AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from core.authentication import JWTAuthentication, create_access_token, create_refresh_token, decode_refresh_token
 
-from .models import User, UserToken
+from .models import Reset, User, UserToken
 from .serializers import UserSerializer
 
 ACCESS_TOKEN = "token"
 REFRESH_TOKEN = "refresh_token"
+RESET_TOKEN_LENGTH = 10
+RESET_EMAIL_FROM = "example@mail.com"
 
 
 class RegisterAPIView(APIView):
@@ -109,3 +113,25 @@ class LogoutAllSessionsAPIView(APIView):
         response.data = {"message": "success"}
 
         return response
+
+
+class ForgotAPIView(APIView):
+    def post(self, request):
+        email = request.data["email"]
+        token = "".join(random.choice(string.ascii_lowercase + string.digits) for _ in range(RESET_TOKEN_LENGTH))
+
+        Reset.objects.create(email=email, token=token)
+
+        reset_url = "http://localhost:4200/reset" + token
+
+        # TODO Send a message to the email
+        send_mail(
+            subject="Reset your password",
+            message=f'Please click <a href="{reset_url}">here></a> to reset you password',
+            from_email=RESET_EMAIL_FROM,
+            recipient_list=[
+                email,
+            ],
+        )
+
+        return Response({"message": "success"})

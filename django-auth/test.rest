@@ -51,3 +51,10 @@ Authorization: token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJleH
 ###
 POST http://localhost:8000/api/refresh/
 content-type: application/json
+###
+POST http://localhost:8000/api/forgot/
+content-type: application/json
+
+{
+    "email": "test_2@mail.ru"
+}
