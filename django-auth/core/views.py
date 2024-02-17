@@ -122,7 +122,7 @@ class ForgotAPIView(APIView):
 
         Reset.objects.create(email=email, token=token)
 
-        reset_url = "http://localhost:4200/reset" + token
+        reset_url = "http://localhost:4200/reset/" + token
 
         # TODO Send a message to the email
         send_mail(
@@ -133,5 +133,28 @@ class ForgotAPIView(APIView):
                 email,
             ],
         )
+
+        return Response({"message": "success"})
+
+
+class ResetAPIView(APIView):
+    def post(self, request):
+        data = request.data
+
+        if data["password"] != data["password_confirm"]:
+            raise APIException("Passwords do not match")
+
+        reset_info = Reset.objects.filter(token=data["token"]).first()
+
+        if not reset_info:
+            raise APIException("Invalid link")
+
+        user = User.objects.filter(email=reset_info.email).first()
+
+        if not user:
+            raise APIException("User not found")
+
+        user.set_password(data["password"])
+        user.save()
 
         return Response({"message": "success"})

@@ -35,8 +35,8 @@ POST http://localhost:8000/api/login/
 content-type: application/json
 
 {
-    "email": "test_1@mail.ru",
-    "password": "1"
+    "email": "test_2@mail.ru",
+    "password": "2"
 }
 ###
 POST http://localhost:8000/api/logout/
@@ -57,4 +57,14 @@ content-type: application/json
 
 {
     "email": "test_2@mail.ru"
+}
+###
+POST http://localhost:8000/api/reset/
+content-type: application/json
+
+{
+    "token": "6r6icfgvvu",
+    "email": "test_2@mail.ru",
+    "password": "2",
+    "password_confirm": "2"
 }
