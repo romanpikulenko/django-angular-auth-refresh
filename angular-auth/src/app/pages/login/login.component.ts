@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +15,7 @@ export class LoginComponent {
 
   constructor(
     private formBuilder: FormBuilder,
-    private http: HttpClient,
+    private authService: AuthService,
     private router: Router
   ) {
   }
@@ -26,6 +26,13 @@ export class LoginComponent {
     })
   }
   submit() {
-    throw new Error('Method not implemented.');
+    this.authService.login(this.form.getRawValue())
+      .subscribe({
+        next: _ => {
+          this.router.navigate(["/"])
+          //this.authService.accessToken = res.token
+        },
+        error: err => console.error(err)
+      });
   }
 }
