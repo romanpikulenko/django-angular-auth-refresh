@@ -28,9 +28,9 @@ export class LoginComponent {
   submit() {
     this.authService.login(this.form.getRawValue())
       .subscribe({
-        next: _ => {
+        next: (res: any) => {
+          this.authService.accessToken = res.token
           this.router.navigate(["/"])
-          //this.authService.accessToken = res.token
         },
         error: err => console.error(err)
       });

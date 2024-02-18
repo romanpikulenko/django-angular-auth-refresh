@@ -16,11 +16,17 @@ export class AuthService {
   }
   login(body: any) {
     const request = this.http.post(`${environment.api}/login/`, body, { withCredentials: true })
-    request.subscribe((res: any) => this.accessToken = res.token);
+    //request.subscribe((res: any) => this.accessToken = res.token);
 
     return request
   }
   user() {
     return this.http.get(`${environment.api}/user/`)
+  }
+  refresh() {
+    const request = this.http.post(`${environment.api}/refresh/`, {}, { withCredentials: true })
+    //request.subscribe((res: any) => this.accessToken = res.token);
+
+    return request
   }
 }
