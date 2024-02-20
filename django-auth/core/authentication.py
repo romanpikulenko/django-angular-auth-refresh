@@ -1,6 +1,8 @@
 import datetime
 
 import jwt
+import pytz
+from django.utils import timezone
 from django.utils.timezone import make_aware
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
 from rest_framework.exceptions import AuthenticationFailed
@@ -23,7 +25,7 @@ class JWTAuthentication(BaseAuthentication):
 
 
 def create_access_token(id):
-    now = datetime.datetime.utcnow()
+    now = timezone.now()
 
     token = jwt.encode(
         {"user_id": id, "exp": now + datetime.timedelta(seconds=30), "iat": now}, "access_secret", algorithm="HS256"
@@ -33,8 +35,8 @@ def create_access_token(id):
 
 
 def create_refresh_token(id):
-    now = datetime.datetime.utcnow()
-    expired_at = make_aware(now + datetime.timedelta(days=7))
+    now = timezone.now()
+    expired_at = now + datetime.timedelta(days=7)
 
     token = jwt.encode({"user_id": id, "exp": expired_at, "iat": now}, "refresh_secret", algorithm="HS256")
 

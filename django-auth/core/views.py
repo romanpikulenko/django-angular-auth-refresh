@@ -1,8 +1,8 @@
-import datetime
 import random
 import string
 
 from django.core.mail import send_mail
+from django.utils import timezone
 from rest_framework.exceptions import APIException, AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -75,9 +75,7 @@ class RefreshAPIView(APIView):
 
         user_id = decode_refresh_token(refresh_token)
 
-        if not UserToken.objects.filter(
-            user_id=user_id, token=refresh_token, expired_at__gt=datetime.datetime.utcnow()
-        ).exists():
+        if not UserToken.objects.filter(user_id=user_id, token=refresh_token, expired_at__gt=timezone.now()).exists():
             raise AuthenticationFailed("unauthenticated")
 
         access_token = create_access_token(user_id)
