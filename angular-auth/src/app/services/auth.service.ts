@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
+  public static authEmitter = new EventEmitter<boolean>();
 
   constructor(private http: HttpClient) { }
 
@@ -16,7 +18,6 @@ export class AuthService {
   }
   login(body: any) {
     const request = this.http.post(`${environment.api}/login/`, body, { withCredentials: true })
-    //request.subscribe((res: any) => this.accessToken = res.token);
 
     return request
   }
@@ -25,8 +26,13 @@ export class AuthService {
   }
   refresh() {
     const request = this.http.post(`${environment.api}/refresh/`, {}, { withCredentials: true })
-    //request.subscribe((res: any) => this.accessToken = res.token);
 
     return request
   }
+  logout() {
+    const request = this.http.post(`${environment.api}/logout/`, {}, { withCredentials: true })
+
+    return request
+  }
+
 }

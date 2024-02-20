@@ -15,8 +15,14 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.user().subscribe({
-      next: (res: any) => this.message = `Hi ${res.first_name} ${res.last_name}`,
-      error: _ => this.message = "Your are not authenticated"
+      next: (res: any) => {
+        this.message = `Hi ${res.first_name} ${res.last_name}`
+        AuthService.authEmitter.emit(true);
+      },
+      error: _ => {
+        this.message = "Your are not authenticated"
+        AuthService.authEmitter.emit(false);
+      }
     })
   }
 }

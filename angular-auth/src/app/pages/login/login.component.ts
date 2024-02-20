@@ -30,7 +30,9 @@ export class LoginComponent {
       .subscribe({
         next: (res: any) => {
           this.authService.accessToken = res.token
+          AuthService.authEmitter.emit(true)
           this.router.navigate(["/"])
+
         },
         error: err => console.error(err)
       });
