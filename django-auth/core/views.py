@@ -1,6 +1,7 @@
 import random
 import string
 
+import pyotp
 from django.core.mail import send_mail
 from django.utils import timezone
 from rest_framework.exceptions import APIException, AuthenticationFailed
@@ -46,8 +47,35 @@ class LoginAPIView(APIView):
         if not user.check_password(password):
             raise AuthenticationFailed("Invalid credentials")
 
-        access_token = create_access_token(user.id)  # type: ignore
-        refresh_token = create_refresh_token(user.id)  # type: ignore
+        if user.tfa_secret:
+            return Response({"id": user.id})  # type: ignore
+
+        secret = pyotp.random_base32()
+        otpauth_url = pyotp.totp.TOTP(secret).provisioning_uri(issuer_name="My app")
+
+        return Response({"id": user.id, "secret": secret, "otpauth_url": otpauth_url})  # type: ignore
+
+
+class TwoFactorAPIView(APIView):
+    def post(self, request):
+        user_id = request.data["id"]
+
+        user = User.objects.filter(pk=user_id).first()
+
+        if not user:
+            raise AuthenticationFailed("Invalid credentials")
+
+        secret = user.tfa_secret or request.data["id"]
+
+        if not pyotp.TOTP(secret).verify(request.data["code"]):
+            raise AuthenticationFailed("Invalid credentials")
+
+        if not user.tfa_secret:
+            user.tfa_secret = secret
+            user.save()
+
+        access_token = create_access_token(user_id)  # type: ignore
+        refresh_token = create_refresh_token(user_id)  # type: ignore
 
         response = Response()
 
