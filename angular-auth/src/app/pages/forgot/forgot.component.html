@@ -1,0 +1,14 @@
+<div *ngIf="cls" class="alert alert-{{cls}}" role="alert">
+  {{message}}
+</div>
+
+<form [formGroup]="form" (submit)="submit()">
+  <h1 class="h3 mb-3 fw-normal">Enter your email</h1>
+
+  <div class="form-floating">
+    <input type="email" formControlName="email" class="form-control" placeholder="Email" required>
+    <label>Email</label>
+  </div>
+
+  <button class="btn btn-primary btn-lg w-100 mt-3" type="submit">Submit</button>
+</form>

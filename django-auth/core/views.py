@@ -116,6 +116,7 @@ class LogoutAllSessionsAPIView(APIView):
 class ForgotAPIView(APIView):
     def post(self, request):
         email = request.data["email"]
+
         token = "".join(random.choice(string.ascii_lowercase + string.digits) for _ in range(RESET_TOKEN_LENGTH))
 
         Reset.objects.create(email=email, token=token)
