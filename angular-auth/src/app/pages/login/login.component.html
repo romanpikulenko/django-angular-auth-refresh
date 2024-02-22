@@ -1,2 +1,2 @@
-<app-form (onLogin)="loginData = $event" *ngIf="loginData.id === 0"></app-form>
-<app-authenticator *ngIf="loginData.id !== 0"></app-authenticator>
+<app-form (onLogin)="onLogin($event)" *ngIf="loginData.id === 0"></app-form>
+<app-authenticator [loginData]="loginData" *ngIf="loginData.id !== 0"></app-authenticator>

@@ -19,7 +19,12 @@ export class AuthService {
     return this.http.post(`${environment.api}/register/`, body)
   }
   login(body: any) {
-    const request = this.http.post(`${environment.api}/login/`, body, { withCredentials: true })
+    const request = this.http.post(`${environment.api}/login/`, body)
+
+    return request
+  }
+  authenticatorLogin(body: any) {
+    const request = this.http.post(`${environment.api}/two-factor/`, body, { withCredentials: true })
 
     return request
   }

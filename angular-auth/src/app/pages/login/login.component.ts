@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormComponent } from './form/form.component';
 import { AuthenticatorComponent } from './authenticator/authenticator.component';
 import { CommonModule } from '@angular/common';
+import * as qrcode from 'qrcode'
 
 @Component({
   selector: 'app-login',
@@ -12,9 +13,18 @@ import { CommonModule } from '@angular/common';
 })
 export class LoginComponent implements OnInit {
   loginData = {
-    id: 0
+    id: 0,
+    img: ''
   }
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+  }
+  onLogin(data: any) {
+    this.loginData = data
+    if (data.otpauth_url) {
+      qrcode.toDataURL(data.otpauth_url, (err: any, img: string) => {
+        this.loginData.img = img
+      })
+    }
+
   }
 }

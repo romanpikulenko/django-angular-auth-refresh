@@ -65,7 +65,7 @@ class TwoFactorAPIView(APIView):
         if not user:
             raise AuthenticationFailed("Invalid credentials")
 
-        secret = user.tfa_secret or request.data["id"]
+        secret = user.tfa_secret or request.data["secret"]
 
         if not pyotp.TOTP(secret).verify(request.data["code"]):
             raise AuthenticationFailed("Invalid credentials")
