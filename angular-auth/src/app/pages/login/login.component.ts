@@ -1,40 +1,20 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { FormComponent } from './form/form.component';
+import { AuthenticatorComponent } from './authenticator/authenticator.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, RouterLink],
+  imports: [FormComponent, AuthenticatorComponent, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
-  form!: FormGroup
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private authService: AuthService,
-    private router: Router
-  ) {
+export class LoginComponent implements OnInit {
+  loginData = {
+    id: 0
   }
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      email: '',
-      password: '',
-    })
-  }
-  submit() {
-    this.authService.login(this.form.getRawValue())
-      .subscribe({
-        next: (res: any) => {
-          this.authService.accessToken = res.token
-          AuthService.authEmitter.emit(true)
-          this.router.navigate(["/"])
-
-        },
-        error: err => console.error(err)
-      });
+    throw new Error('Method not implemented.');
   }
 }

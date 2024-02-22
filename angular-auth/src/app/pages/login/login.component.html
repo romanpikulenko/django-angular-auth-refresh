@@ -1,16 +1,2 @@
-<form [formGroup]="form" (submit)="submit()">
-  <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-
-  <div class="form-floating">
-    <input type="email" formControlName="email" class="form-control" placeholder="name@example.com" required>
-    <label>Email</label>
-  </div>
-  <div class="form-floating">
-    <input formControlName="password" type="password" class="form-control" placeholder="Password">
-    <label>Password</label>
-  </div>
-  <div class="mb-3">
-    <a routerLink="/forgot">Forgot you password?</a>
-  </div>
-  <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
-</form>
+<app-form (onLogin)="loginData = $event" *ngIf="loginData.id === 0"></app-form>
+<app-authenticator *ngIf="loginData.id !== 0"></app-authenticator>
