@@ -28,6 +28,13 @@ export class AuthService {
 
     return request
   }
+
+  googleLogin(body: any) {
+    const request = this.http.post(`${environment.api}/google-auth/`, body, { withCredentials: true })
+
+    return request
+  }
+
   user() {
     return this.http.get(`${environment.api}/user/`)
   }

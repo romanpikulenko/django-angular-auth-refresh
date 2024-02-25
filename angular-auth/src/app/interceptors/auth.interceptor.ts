@@ -3,7 +3,7 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
-  HttpInterceptor, HttpErrorResponse
+  HttpInterceptor, HttpErrorResponse, HttpHeaders
 } from '@angular/common/http';
 import { catchError, Observable, switchMap, throwError } from 'rxjs';
 import { AuthService } from "../services/auth.service";
@@ -16,11 +16,17 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    const req = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${this.authService.accessToken}`
-      }
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.authService.accessToken}`,
     });
+
+    // const req = request.clone({
+    //   setHeaders: {
+    //     Authorization: `Bearer ${this.authService.accessToken}`,
+    //   },
+    // });
+
+    const req = request.clone({ headers });
 
     return next.handle(req).pipe(catchError((err: HttpErrorResponse) => {
       if (err.status === 401 && !this.refresh) {
