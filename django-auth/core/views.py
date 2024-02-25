@@ -4,6 +4,8 @@ import string
 import pyotp
 from django.core.mail import send_mail
 from django.utils import timezone
+from google.auth.transport.requests import Request as GoogleRequest
+from google.oauth2 import id_token
 from rest_framework.exceptions import APIException, AuthenticationFailed
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -185,3 +187,36 @@ class ResetAPIView(APIView):
         user.save()
 
         return Response({"message": "success"})
+
+
+class GoogleAuthAPIView(APIView):
+    def post(self, request):
+        token = request.data["token"]
+        googleUser = id_token.verify_token(token, GoogleRequest())
+
+        if not googleUser:
+            raise AuthenticationFailed("unauthenticated")
+
+        user = User.objects.filter(email=googleUser["email"]).first()
+
+        if not user:
+            user = User.objects.create(
+                first_name=googleUser["given_name"], last_name=googleUser["family_name"], email=googleUser["email"]
+            )
+            user.set_password(token)
+            user.save()
+
+        user_id = user.id  # type: ignore
+
+        access_token = create_access_token(user_id)  # type: ignore
+        refresh_token = create_refresh_token(user_id)  # type: ignore
+
+        response = Response()
+
+        response.set_cookie(key=REFRESH_TOKEN, value=refresh_token, httponly=True)
+
+        response.data = {
+            ACCESS_TOKEN: access_token,
+        }
+
+        return response

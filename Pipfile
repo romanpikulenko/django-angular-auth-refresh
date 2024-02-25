@@ -10,6 +10,7 @@ django-cors-headers = "*"
 mysqlclient = "*"
 pyjwt = "*"
 pyotp = "*"
+google-auth = "*"
 
 [dev-packages]
 
